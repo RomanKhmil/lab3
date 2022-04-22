@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalcClass
 {
-    internal class CalcClass
+    public class CalcClass
     {
         public static string lastError { get; private set; }
 
