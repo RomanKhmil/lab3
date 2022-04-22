@@ -16,8 +16,47 @@ namespace AnalaizerClass
             this.expression = expression;
             lastError = "";
         }
+        public string Estimate()
+        {
+            CheckCurrency();
+            string formatExpr = Format();
+            string polishExpr = PolishInverseExpr(formatExpr);
+            string result = RunEstimate(polishExpr);
+            return result;
+        }
+        private string RunEstimate(string polishInverseExpr)
+        {
+            string[] elements = polishInverseExpr.Split(' ');
 
+            long result = 0;
+            Stack<long> temp = new Stack<long>();
 
+            for (int i = 0; i < elements.Length; i++)
+            {
+                string element = elements[i];
+
+                if (isAnumb(element))
+                {
+                    temp.Push(Int64.Parse(element));
+                }
+                else if (isAnOper(element))
+                {
+                    long a = temp.Pop();
+                    long b = temp.Pop();
+
+                    switch (element[0])
+                    {
+                        case '+': result = CalcClass.CalcClass.Add(b, a); break;
+                        case '-': result = CalcClass.CalcClass.Sub(b, a); break;
+                        case '*': result = CalcClass.CalcClass.Mult(b, a); break;
+                        case '/': result = CalcClass.CalcClass.Div(b, a); break;
+                        case 'm': result = CalcClass.CalcClass.Mod(b, a); break;
+                    }
+                    temp.Push(result);
+                }
+            }
+            return temp.Peek().ToString();
+        }
         private void CheckCurrency()
         {
             lengthCheck();
