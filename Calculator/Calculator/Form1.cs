@@ -48,7 +48,19 @@ namespace Calculator
 
         private void buttonCalc_Click(object sender, EventArgs e)
         {
-            
+            if (textBoxExpression.Text.Length == 0) return;
+
+            AnalaizerClass.AnalaizerClass analyzer = new AnalaizerClass.AnalaizerClass(textBoxExpression.Text);
+            try
+            {
+                string res = analyzer.Estimate();
+                textBoxResult.Text = res;
+            }
+            catch (Exception exception)
+            {
+                errorMessage = analyzer.lastError == "" ? exception.Message : analyzer.lastError;
+                textBoxResult.Text = errorMessage;
+            }
         }
 
         private void buttonC_Click(object sender, EventArgs e)
